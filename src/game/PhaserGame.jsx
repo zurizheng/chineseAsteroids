@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { forwardRef, useEffect, useLayoutEffect, useRef } from 'react';
 import StartGame from './main';
 import { EventBus } from './EventBus';
-
+import './PhaserGame.css'
 export const PhaserGame = forwardRef(function PhaserGame ({ currentActiveScene }, ref)
 {
     const game = useRef();
@@ -52,7 +52,10 @@ export const PhaserGame = forwardRef(function PhaserGame ({ currentActiveScene }
     }, [currentActiveScene, ref])
 
     return (
-        <div id="game-container"></div>
+        <div className = "input-text">
+            <div id="game-container"></div>
+            <input type = "text" name="name" className = "input" placeholder = "Enter chinese character"/>
+        </div>
     );
 
 });

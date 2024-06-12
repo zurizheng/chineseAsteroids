@@ -8,6 +8,8 @@ export class Game extends Scene {
     }
 
     create() {
+
+
         // Set background color
         this.cameras.main.setBackgroundColor(0x00ff00);
 
@@ -54,27 +56,15 @@ export class Game extends Scene {
 
     spawnAsteroid() {
         const words = [
-            "accommodate",
-            "millennium",
-            "pronunciation",
-            "liaison",
-            "entrepreneur",
-            "maintenance",
-            "conscientious",
-            "parallel",
-            "recommend",
-            "sophisticated",
-            "occasion",
-            "necessary",
-            "separate",
-            "weird",
-            "embarrass",
-            "definitely",
-            "receive",
-            "calendar",
-            "privilege",
-            "occurrence"
+            "的", "一", "是", "在", "不", "了", "有", "和", "人", "这",
+            "中", "大", "为", "上", "个", "国", "我", "以", "要", "他",
+            "时", "来", "用", "们", "生", "到", "作", "地", "于", "出",
+            "就", "分", "对", "成", "会", "可", "主", "发", "年", "动",
+            "同", "工", "也", "能", "下", "过", "子", "说", "产", "种",
+            "面", "而", "方", "后", "多", "定", "行", "学", "法", "所"
+            // Add more characters as needed
         ];
+        
     
         
         const word = Phaser.Utils.Array.GetRandom(words);
@@ -94,31 +84,27 @@ export class Game extends Scene {
     }
 
     handleTyping(event) {
-        if (event.key === 'Enter') {
-            // Check if the current input matches any word to destroy asteroids
-            this.asteroids.getChildren().forEach((asteroid) => {
-                // Add logic to match typed word with asteroid's word
-                if (this.currentInput === asteroid.word) {
-                    const wordText = asteroid.getData('text');
-                    asteroid.destroy();
-                    
-                    if (wordText) {
-                        wordText.setVisible(false).destroy();
-                    } // Destroy the asteroid if there's a match
-                }
-            });
-            // Clear the current input after processing
-            this.currentInput = '';
-        } else if (event.key === 'Backspace') {
-            // Handle backspace to remove the last character
-            this.currentInput = this.currentInput.slice(0, -1);
-        } else {
-            // Add the typed character to the current input
-            this.currentInput += event.key;
-        }
 
-        // Update the text box to show the current input
-        this.typedText.setText(this.currentInput);
+        this.returnKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+
+        this.returnKey.on("down", event => {
+            let name = document.querySelector('input[name="name"]');
+            if(name.value != "") {
+                this.asteroids.getChildren().forEach((asteroid) => {
+                    // Add logic to match typed word with asteroid's word
+                    if (name.value === asteroid.word) {
+                        const wordText = asteroid.getData('text');
+                        asteroid.destroy();
+                        
+                        if (wordText) {
+                            wordText.setVisible(false).destroy();
+                        } // Destroy the asteroid if there's a match
+                    }
+                });
+
+                name.value = ""
+            }
+        });
     }
 
     update() {

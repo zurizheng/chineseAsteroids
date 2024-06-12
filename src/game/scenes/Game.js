@@ -1,5 +1,6 @@
 import { EventBus } from '../EventBus';
 import { Scene } from 'phaser';
+import words from './chinese_words';
 import Phaser from 'phaser';
 
 export class Game extends Scene {
@@ -8,7 +9,22 @@ export class Game extends Scene {
     }
 
     create() {
+        // Initialize elapsed time
+        this.elapsedTime = 0;
 
+        // Display elapsed time
+        this.timeText = this.add.text(20, 20, 'Time: 0s', {
+            fontFamily: 'Arial Black', fontSize: 24, color: '#ffffff'
+        }).setDepth(100);
+
+        // Initialize score
+        this.score = 0;
+
+        // Display score
+        this.scoreText = this.add.text(900, 20, 'Score: 0', {
+            fontFamily: 'Arial Black', fontSize: 24, color: '#ffffff',
+            align: 'right'
+        }).setOrigin(1, 0).setDepth(100);
 
         // Set background color
         this.cameras.main.setBackgroundColor(0x00ff00);
@@ -50,27 +66,21 @@ export class Game extends Scene {
             loop: true
         });
 
+        // Start the game timer
+        this.startTime = Date.now();
+
         // Emit event to indicate the current scene is ready
         EventBus.emit('current-scene-ready', this);
     }
 
     spawnAsteroid() {
-        const words = [
-            "的", "一", "是", "在", "不", "了", "有", "和", "人", "这",
-            "中", "大", "为", "上", "个", "国", "我", "以", "要", "他",
-            "时", "来", "用", "们", "生", "到", "作", "地", "于", "出",
-            "就", "分", "对", "成", "会", "可", "主", "发", "年", "动",
-            "同", "工", "也", "能", "下", "过", "子", "说", "产", "种",
-            "面", "而", "方", "后", "多", "定", "行", "学", "法", "所"
-            // Add more characters as needed
-        ];
         
-    
         
         const word = Phaser.Utils.Array.GetRandom(words);
         const asteroid = this.asteroids.create(Phaser.Math.Between(50, 950), 0, 'asteroid');
-        asteroid.word = word;
-        asteroid.setVelocity(0, 50);
+        asteroid.word = word[0];
+        asteroid.pinyin = word[1];
+        asteroid.setVelocity(0, 35);
 
         // Add word text to asteroid
         const wordText = this.add.text(asteroid.x, asteroid.y, word, {
@@ -84,41 +94,42 @@ export class Game extends Scene {
     }
 
     handleTyping(event) {
-
-        this.returnKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
-
-        this.returnKey.on("down", event => {
-            let name = document.querySelector('input[name="name"]');
-            if(name.value != "") {
-                this.asteroids.getChildren().forEach((asteroid) => {
-                    // Add logic to match typed word with asteroid's word
-                    if (name.value === asteroid.word) {
-                        const wordText = asteroid.getData('text');
-                        asteroid.destroy();
-                        
-                        if (wordText) {
-                            wordText.setVisible(false).destroy();
-                        } // Destroy the asteroid if there's a match
+        let name = document.querySelector('input[name="name"]');
+        if(name.value != "") {
+            this.asteroids.getChildren().forEach((asteroid) => {
+                if (name.value === asteroid.word) {
+                    const wordText = asteroid.getData('text');
+                    asteroid.destroy();
+                    
+                    if (wordText) {
+                        wordText.setVisible(false).destroy();
                     }
-                });
+                    
+                    // Increment the score
+                    this.score += 10;
+                    this.scoreText.setText('Score: ' + this.score);
+                }
+            });
 
-                name.value = ""
-            }
-        });
+            name.value = ""
+        }
     }
 
     update() {
+        // Update elapsed time
+        this.elapsedTime = Math.floor((Date.now() - this.startTime) / 1000);
+        this.timeText.setText('Time: ' + this.elapsedTime + 's');
+
         // Check if any asteroids have reached the bottom
         this.asteroids.getChildren().forEach((asteroid) => {
             if (asteroid.getData('text') != null) {
                 asteroid.getData('text').y = asteroid.y;
             }
             
-            
-
             if (asteroid.y > 800) {
-                this.scene.start('GameOver'); // Game over if any asteroid reaches the bottom
+                this.scene.start('GameOver', { score: this.score, elapsedTime: this.elapsedTime }); // Game over if any asteroid reaches the bottom
             }
         });
     }
 }
+

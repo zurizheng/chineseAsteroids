@@ -60,7 +60,7 @@ export class Game extends Scene {
 
         // Spawn asteroids periodically
         this.time.addEvent({
-            delay: 2000,
+            delay: 4000,
             callback: this.spawnAsteroid,
             callbackScope: this,
             loop: true
@@ -83,7 +83,7 @@ export class Game extends Scene {
         asteroid.setVelocity(0, 35);
 
         // Add word text to asteroid
-        const wordText = this.add.text(asteroid.x, asteroid.y, word, {
+        const wordText = this.add.text(asteroid.x, asteroid.y, word[0], {
             fontFamily: 'Arial Black', fontSize: 20, color: '#ff0000',
             stroke: '#000000', strokeThickness: 6,
             align: 'center' 
@@ -128,7 +128,8 @@ export class Game extends Scene {
             }
             
             if (asteroid.y > 800) {
-                this.scene.start('GameOver', { score: this.score, elapsedTime: this.elapsedTime }); // Game over if any asteroid reaches the bottom
+                this.scene.start(`GameOver`, { score: this.score, elapsedTime: this.elapsedTime, deathMsg : `You got ${asteroid.pinyin}'ed`}); // Game over if any asteroid reaches the bottom
+                
             }
         });
     }

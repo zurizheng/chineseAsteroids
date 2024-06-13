@@ -30,8 +30,14 @@ export class GameOver extends Scene {
             align: 'center'
         }).setOrigin(0.5).setDepth(100);
 
+        this.add.text(512, 520, data.deathMsg, {
+            fontFamily: 'Arial Black', fontSize: 32, color: '#ffffff',
+            stroke: '#000000', strokeThickness: 6,
+            align: 'center'
+        }).setOrigin(0.5).setDepth(100);
+
         // Add Start Game button
-        const startButton = this.add.text(512, 560, 'Retry', {
+        const startButton = this.add.text(512, 600, 'Retry', {
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
             stroke: '#000000', strokeThickness: 6,
             align: 'center'

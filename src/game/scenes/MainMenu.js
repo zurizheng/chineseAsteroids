@@ -17,16 +17,9 @@ export class MainMenu extends Scene
         // Add logo image
         this.logo = this.add.image(512, 300, 'logo').setDepth(100);
     
-        // Add main menu text
-        this.add.text(512, 540, 'Main Menu', {
-            fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'center'
-        }).setDepth(100).setOrigin(0.5);
-    
         // Add Start Game button
         const startButton = this.add.text(512, 460, 'Start Game', {
-            fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
+            fontFamily: 'Arial Black', fontSize: 38, color: '#5FD7E8',
             stroke: '#000000', strokeThickness: 6,
             align: 'center'
         }).setDepth(100).setOrigin(0.5).setInteractive({ useHandCursor: true });

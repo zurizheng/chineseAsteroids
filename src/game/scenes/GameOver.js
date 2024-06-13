@@ -11,26 +11,32 @@ export class GameOver extends Scene {
 
         this.add.image(512, 384, 'background').setAlpha(0.5);
 
-        this.add.text(512, 284, 'Game Over', {
+        this.add.text(512, 84, 'Game Over', {
             fontFamily: 'Arial Black', fontSize: 64, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
         }).setOrigin(0.5).setDepth(100);
 
         // Display score and elapsed time
-        this.add.text(512, 384, 'Score: ' + data.score, {
+        this.add.text(512, 184, 'Score: ' + data.score, {
             fontFamily: 'Arial Black', fontSize: 32, color: '#ffffff',
             stroke: '#000000', strokeThickness: 6,
             align: 'center'
         }).setOrigin(0.5).setDepth(100);
 
-        this.add.text(512, 460, 'Time: ' + data.elapsedTime + 's', {
+        this.add.text(512, 260, 'Time: ' + data.elapsedTime + 's', {
             fontFamily: 'Arial Black', fontSize: 32, color: '#ffffff',
             stroke: '#000000', strokeThickness: 6,
             align: 'center'
         }).setOrigin(0.5).setDepth(100);
 
-        this.add.text(512, 520, data.deathMsg, {
+        this.add.text(512, 320, data.deathMsg, {
+            fontFamily: 'Arial Black', fontSize: 32, color: '#ffffff',
+            stroke: '#000000', strokeThickness: 6,
+            align: 'center'
+        }).setOrigin(0.5).setDepth(100);
+
+        this.add.text(512, 440, data.helpSentence, {
             fontFamily: 'Arial Black', fontSize: 32, color: '#ffffff',
             stroke: '#000000', strokeThickness: 6,
             align: 'center'

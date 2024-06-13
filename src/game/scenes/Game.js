@@ -79,11 +79,18 @@ export class Game extends Scene {
         const word = Phaser.Utils.Array.GetRandom(words);
         const asteroid = this.asteroids.create(Phaser.Math.Between(50, 950), 0, 'asteroid');
         asteroid.word = word[0];
+        // console.log(word);
         asteroid.pinyin = word[1];
+        asteroid.eDef = word[2];
+        asteroid.cSen = word[3];
+        asteroid.pSen = word[4];
+        asteroid.eSen = word[5];
+
+
         asteroid.setVelocity(0, 35);
 
         // Add word text to asteroid
-        const wordText = this.add.text(asteroid.x, asteroid.y, word[0], {
+        const wordText = this.add.text(asteroid.x, asteroid.y, asteroid.word, {
             fontFamily: 'Arial Black', fontSize: 20, color: '#ff0000',
             stroke: '#000000', strokeThickness: 6,
             align: 'center' 
@@ -99,20 +106,19 @@ export class Game extends Scene {
             this.asteroids.getChildren().forEach((asteroid) => {
                 if (name.value === asteroid.word) {
                     const wordText = asteroid.getData('text');
+
+                    // Increment the score
+                    this.score += 10 * asteroid.word.length;
+                    this.scoreText.setText('Score: ' + this.score);
+                    name.value = ""
+
                     asteroid.destroy();
                     
                     if (wordText) {
                         wordText.setVisible(false).destroy();
                     }
-                    
-                    // Increment the score
-                    this.score += 10;
-                    this.scoreText.setText('Score: ' + this.score);
-                    name.value = ""
                 }
             });
-
-            
         }
     }
 
@@ -128,7 +134,7 @@ export class Game extends Scene {
             }
             
             if (asteroid.y > 800) {
-                this.scene.start(`GameOver`, { score: this.score, elapsedTime: this.elapsedTime, deathMsg : `You got ${asteroid.pinyin}'ed`}); // Game over if any asteroid reaches the bottom
+                this.scene.start(`GameOver`, { score: this.score, elapsedTime: this.elapsedTime, deathMsg : `You got ${asteroid.pinyin}'ed`, helpSentence : `English Definition: ${asteroid.eDef}\nChinese Sentence: ${asteroid.cSen}\nPinying Sentence: ${asteroid.pSen}\nEnglish Sentence: ${asteroid.eSen}`}); // Game over if any asteroid reaches the bottom
                 
             }
         });

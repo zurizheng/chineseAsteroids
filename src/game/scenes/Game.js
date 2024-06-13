@@ -93,7 +93,7 @@ export class Game extends Scene {
         asteroid.setData('text', wordText);
     }
 
-    handleTyping(event) {
+    handleTyping() {
         let name = document.querySelector('input[name="name"]');
         if(name.value != "") {
             this.asteroids.getChildren().forEach((asteroid) => {
@@ -108,10 +108,11 @@ export class Game extends Scene {
                     // Increment the score
                     this.score += 10;
                     this.scoreText.setText('Score: ' + this.score);
+                    name.value = ""
                 }
             });
 
-            name.value = ""
+            
         }
     }
 
